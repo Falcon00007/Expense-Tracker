@@ -1,0 +1,11 @@
+.container{
+    background-color: #c2b8b8;
+    display: flex;
+    width: 70%;
+    margin: 10% auto;
+    align-items: center;
+    height: 300px;
+}
+.form{
+    align-items: center;
+}
