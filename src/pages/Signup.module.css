@@ -1,0 +1,71 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background: linear-gradient(to bottom right, #FF6B6B, #FFC3A0);
+}
+
+.signupForm {
+  background-color: #fff;
+  padding: 30px;
+  border-radius: 10px;
+  box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.1);
+  width: 350px;
+  text-align: center;
+}
+
+.signupForm h2 {
+  color: #333;
+  margin-bottom: 20px;
+}
+
+.signupForm input {
+  width: 100%;
+  padding: 12px;
+  margin-bottom: 20px;
+  border: none;
+  border-radius: 5px;
+  background-color: #f7f7f7;
+  color: #333;
+}
+
+.signupForm button {
+  background-color: #FF6B6B;
+  color: white;
+  padding: 12px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background-color 0.3s ease-in-out;
+}
+
+.signupForm button:hover {
+  background-color: #FF8E8E;
+}
+
+.loginLink {
+  margin-top: 20px;
+  color: black;
+  text-align: center;
+  background-color: lightblue;
+  height: 3rem;
+  width: 25%;
+}
+
+.signupForm .loginLink a {
+  color: #FF6B6B;
+  text-decoration: none;
+  transition: color 0.3s ease-in-out;
+}
+
+.signupForm .loginLink a:hover {
+  color: #FF8E8E;
+}
+.errorMessage{
+  text-align: center;
+  color: red;
+  font-size: 1.2rem;
+}
