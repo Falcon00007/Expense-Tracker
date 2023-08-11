@@ -1,14 +1,18 @@
 import React, { useState } from 'react';
 import classes from './Signup.module.css';
+import { Link,useNavigate} from 'react-router-dom';
 
 function Signup() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfimrPassword] = useState('');
   const [error, setError]= useState("");
+  const [loading, setLoading]= useState(false);
+  const navigate= useNavigate();
 
   const handleSignup = async (e) => {
     e.preventDefault();
+    setLoading(true)
     
     if(!email || !password || !confirmPassword){
       setError("All fields are mandatory!!");
@@ -34,14 +38,19 @@ function Signup() {
     })
 
       if(res.ok){
-        const data= await res.json()
-          //authCtx.login(data.idToken, data.email);
-          localStorage.setItem("email", data.email.replace(/[@.]/g, ""));
-          localStorage.setItem("token", data.idToken)
-          console.log(data)
-          //navigate('/');
+        setLoading(false);
+       // const data= await res.json()
+          navigate('/login');
           console.log('User registered successfully');
         }
+        else{
+          const data= await res.json();  //in case the POST method fails, catch the response like this
+            if(data && data.error.message){
+              alert("SignUp not successful- " + data.error.message)
+            } else{
+              alert("Some error occured!! Please try again..")
+            }
+          }
     } catch (error) {
       console.error('Error signing up:', error);
     }
@@ -79,9 +88,10 @@ function Signup() {
         />
         <p className={classes.errorMessage}>{error}</p>
         <button type="submit">Sign Up</button>
+        {loading && <h2>Submitting Data...</h2>}
       </form>
       <div className={classes.loginLink}>
-        <p>Have an account?Login</p>       
+        <Link to="/login"><p>Have an account?Login</p></Link>       
       </div>
     </div>
     </>

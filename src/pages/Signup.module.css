@@ -47,7 +47,7 @@
 }
 
 .loginLink {
-  margin-top: 20px;
+  margin-top: 1.4rem;
   color: black;
   text-align: center;
   background-color: lightblue;
@@ -55,9 +55,11 @@
   width: 25%;
 }
 
-.signupForm .loginLink a {
+.loginLink a{
   color: #FF6B6B;
   text-decoration: none;
+  font-weight: 600;
+  font-size: 1.2rem;
   transition: color 0.3s ease-in-out;
 }
 
