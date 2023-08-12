@@ -87,7 +87,7 @@ function Signup() {
           required
         />
         <p className={classes.errorMessage}>{error}</p>
-        <button type="submit">Sign Up</button>
+        {!loading && <button type="submit">Sign Up</button>}
         {loading && <h2>Submitting Data...</h2>}
       </form>
       <div className={classes.loginLink}>

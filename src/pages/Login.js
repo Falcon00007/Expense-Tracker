@@ -75,7 +75,7 @@ function Login() {
           onChange={(e) => setPassword(e.target.value)}
         />
         <p className={classes.errorMessage}>{error}</p>
-        <button type="submit">Login</button>
+        {!loading && <button type="submit">Login</button>}
         {loading && <h2>Submitting Data...</h2>}
         <div className={classes.forgotPasswordLink}>
           <a href="/forgot-password">Forgot Password?</a>
