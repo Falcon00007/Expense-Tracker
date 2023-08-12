@@ -46,9 +46,9 @@ function Signup() {
         else{
           const data= await res.json();  //in case the POST method fails, catch the response like this
             if(data && data.error.message){
-              alert("SignUp not successful- " + data.error.message)
+              setError("SignUp not successful- " + data.error.message)
             } else{
-              alert("Some error occured!! Please try again..")
+              setError("Some error occured!! Please try again..")
             }
           }
     } catch (error) {

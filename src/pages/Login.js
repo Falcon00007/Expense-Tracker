@@ -39,7 +39,6 @@ function Login() {
 
           navigate('/home');
           console.log('User LoggedIn successfully');
-          alert("Login successful!!")
         }
         else{
             setLoading(false);
