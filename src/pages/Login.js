@@ -30,11 +30,11 @@ function Login() {
         'content-type' : 'application/json'
       }
     })
-
-      if(res.ok){
+     if(res.ok){
         setLoading(false);
         const data= await res.json()
-          localStorage.setItem("email", data.email.replace(/[@.]/g, ""));
+          //localStorage.setItem("email", data.email.replace(/[@.]/g, ""));
+          localStorage.setItem("email",email);
           localStorage.setItem("token", data.idToken)
 
           navigate('/home');
@@ -77,7 +77,7 @@ function Login() {
         {!loading && <button type="submit">Login</button>}
         {loading && <h2>Submitting Data...</h2>}
         <div className={classes.forgotPasswordLink}>
-          <a href="/forgot-password">Forgot Password?</a>
+          <Link to="/forgetpassword">Forgot Password?</Link>
         </div>
         <div className={classes.signupLink}>
           <Link to="/"><p>Don't have an account? Sign Up.</p></Link>

@@ -30,7 +30,7 @@ const Navbar = () => {
         <li className={styles.navItem}><Link to="/home" className={styles.navLink}>Home</Link></li>
         <li className={styles.navItem}><Link to="/profile" className={styles.navLink}>Profile</Link></li>
         {!isLoggedIn&& <li className={styles.navItem}><Link to="/login" className={styles.navLink}>Login</Link></li>}
-        <li className={styles.navItem}><button  className={styles.navLink} onClick={logoutHandler}>Logout</button></li>
+        {isLoggedIn&& <li className={styles.navItem}><button  className={styles.navLink} onClick={logoutHandler}>Logout</button></li>}
       </ul>
     </nav>
   );
