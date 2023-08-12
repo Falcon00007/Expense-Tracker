@@ -1,7 +1,7 @@
 import React,{useState} from 'react';
 import styles from './Navbar.module.css';
 import { Link, useNavigate } from 'react-router-dom';
-import { BiMenu } from "react-icons/bi";
+import { BiMenu,BiSolidHome,BiSolidUser,BiLogIn,BiLogOut,BiNotepad } from "react-icons/bi";
 
 const Navbar = () => {
     const [menuActive, setMenuActive] = useState(false);
@@ -27,11 +27,12 @@ const Navbar = () => {
       <span className={styles.hamburgerIcon}><BiMenu/></span>
     </button>
       <ul className={`${styles.navbarNav} ${menuActive ? styles.active : ''}`}>
-        <li className={styles.navItem}><Link to="/home" className={styles.navLink}>Home</Link></li>
-        <li className={styles.navItem}><Link to="/profile" className={styles.navLink}>Profile</Link></li>
-        {!isLoggedIn&& <li className={styles.navItem}><Link to="/login" className={styles.navLink}>Login</Link></li>}
-        {isLoggedIn&& <li className={styles.navItem}><button  className={styles.navLink} onClick={logoutHandler}>Logout</button></li>}
-      </ul>
+        <li className={styles.navItem}><Link to="/home" className={styles.navLink}><p><BiSolidHome/></p> Home</Link></li>
+        <li className={styles.navItem}><Link to="/profile" className={styles.navLink}><p><BiSolidUser/></p> Profile</Link></li>
+        {!isLoggedIn&& <li className={styles.navItem}><Link to="/login" className={styles.navLink}><p><BiLogIn/></p> Login</Link></li>}
+        {isLoggedIn&& <li className={styles.navItem}><Link to="/expense" className={styles.navLink}><p><BiNotepad/></p> Expenses</Link></li>}
+        {isLoggedIn&& <li className={styles.navItem}><button  className={styles.navLink} onClick={logoutHandler}><p><BiLogOut/></p> Logout</button></li>}
+        </ul>
     </nav>
   );
 };

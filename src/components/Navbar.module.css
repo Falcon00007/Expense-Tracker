@@ -24,15 +24,27 @@
   }
   
   .navItem {
+    display: flex;
     font-size: 1.1rem;
-    width: 4rem;
+    width: 4.2rem;
+    max-height: 1.7rem;
+    margin-right: 1.5rem;
   }
   .navLink {
+    display: flex;
     text-decoration: none;
     color: #fff;
     transition: color 0.3s ease;
     opacity: 0.8;
+   
   }
+.navLink p{
+  text-align: center;
+  margin-right: 10px;
+  position: relative;
+  margin-top: 10px;
+  bottom: 8px;
+}
   .navLink:hover {
     box-shadow: 2px 3px 4px #fff;
     opacity: 1;
