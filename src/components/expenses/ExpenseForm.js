@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import styles from './ExpenseForm.module.css';
 import ExpenseList from './ExpenseList';
 
@@ -16,12 +16,71 @@ const Expenses = () => {
       description:description,
       category:selectedCategory
     }
-    setExpenses([...expenses, data]);
+    fetch(
+      "https://expense-tracker-25433-default-rtdb.firebaseio.com/",
+      {
+        method: "POST",
+        body: JSON.stringify(data),
+        headers: {
+          "Content-Type": "application/json",
+        }
+      }
+    )
+      .then((response) => {
+        console.log(response);
+      })
+      .catch((err) => {
+        alert(err);
+      });
+    setExpenses((prevExpenses)=>[...prevExpenses, data]);
 
     setMoneySpent('');
     setDescription('');
     setSelectedCategory('');
   };
+
+  useEffect(()=>{
+    const fetchExpenses = () => {
+      fetch(
+        "https://expense-tracker-25433-default-rtdb.firebaseio.com/",
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      )
+        .then((response) => {
+          if (response.ok) {
+            return response.json();
+          } else {
+            response.json().then((data) => {
+              let errorMessage = "Authotication Failed";
+              if (data && data.error && data.error.message) {
+                errorMessage = data.error.message;
+              }
+              throw new Error(errorMessage);
+            });
+          }
+        })
+        .then((data) => {
+          console.log(data);
+          let arr = [];
+          for (let key in data) {
+            arr.push({
+              description: data[key].description,
+              amount: data[key].amount,
+              category: data[key].category,
+            });
+          }
+          setExpenses(arr);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    };
+    fetchExpenses();
+  },[])
 
   return (
     <div className={styles.expenseForm}>

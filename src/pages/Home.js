@@ -5,6 +5,7 @@ import { BsFillCheckCircleFill } from "react-icons/bs";
 
 const Home = () => {
   const [error, setError]= useState("");
+  const isLoggedIn=localStorage.getItem('token');
 
   const verifyHandler=(e)=>{
     e.preventDefault();
@@ -43,14 +44,15 @@ const Home = () => {
     <>
     <div className={classes.header}>
     <h1>Welcome to Expense Tracker!!</h1>
-    <h3><i>Your Profile is Incomplete <Link to="/profile">Complete Now</Link></i></h3>
+    {isLoggedIn&& <h3><i>Your Profile is Incomplete <Link to="/profile">Complete Now</Link></i></h3>}
     </div>
-    <div className={classes.container}>
+    {!isLoggedIn && <h2>Login to Enjoy our top class services.. </h2>}
+   {isLoggedIn && <div className={classes.container}>
         <h2>Verify your email </h2>
         <button className={classes.verifyBtn} onClick={verifyHandler}>
           Verify Email <BsFillCheckCircleFill/>
         </button>
-      </div>
+      </div>}
       <p className={classes.errorMessage}>{error}</p>
     </>
   )
