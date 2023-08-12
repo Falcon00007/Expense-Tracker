@@ -36,7 +36,7 @@ function Login() {
         const data= await res.json()
           localStorage.setItem("email", data.email.replace(/[@.]/g, ""));
           localStorage.setItem("token", data.idToken)
-          console.log(data)
+
           navigate('/home');
           console.log('User LoggedIn successfully');
           alert("Login successful!!")
