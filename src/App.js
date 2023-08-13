@@ -1,3 +1,4 @@
+import React,{useContext} from 'react'
 import Navbar from "./components/Navbar";
 import Expense from "./components/expenses/Expense";
 import ForgetPassword from "./pages/ForgetPassword";
@@ -6,22 +7,22 @@ import Login from "./pages/Login";
 import Profile from "./pages/Profile";
 import Signup from "./pages/Signup";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import AuthContext from './store/auth-context';
 function App() {
-  const isLoggedIn= !!localStorage.getItem('token');
+  const isLoggedIn= useContext(AuthContext).isLoggedIn;
+
   return (
     <BrowserRouter>
     <Navbar/>
     <Routes>
-   <Route path="/" exact element={ <Signup/>}/>
+   {!isLoggedIn && <Route path="/" exact element={ <Signup/>}/>}
    {!isLoggedIn && <Route path="/login" element={<Login/>}/>}
-   <Route path="/home" element={<Home/>}/>
+    <Route path="/home" element={<Home/>}/>
    {isLoggedIn && <Route path="/profile" element={<Profile/>}/>}
    {isLoggedIn && <Route path="/expense" element={<Expense/>}/>}
    <Route path="/forgetpassword" element={<ForgetPassword/>}/>
    <Route path='*' element={<Navigate to='/login'/>}/>
-
-    </Routes>
-    
+    </Routes>  
     </BrowserRouter>
   );
 }

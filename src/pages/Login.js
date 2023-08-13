@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import classes from './Login.module.css';
 import { Link,useNavigate } from 'react-router-dom';
+import AuthContext from '../store/auth-context';
 
 function Login() {
   const [email, setEmail] = useState('');
@@ -8,6 +9,7 @@ function Login() {
   const [loading, setLoading] = useState(false);
   const [error, setError]= useState("");
   const navigate= useNavigate();
+  const authCtx= useContext(AuthContext);
 
   const handleLogin = async(e) => {
     e.preventDefault();
@@ -33,7 +35,7 @@ function Login() {
      if(res.ok){
         setLoading(false);
         const data= await res.json()
-          //localStorage.setItem("email", data.email.replace(/[@.]/g, ""));
+        authCtx.login(data.idToken, data.email);
           localStorage.setItem("email",email);
           localStorage.setItem("token", data.idToken);
           navigate('/home');

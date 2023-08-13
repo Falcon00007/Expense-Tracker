@@ -11,28 +11,35 @@ const Expenses = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    const data={
+    const expenseData={
       amount:moneySpent,
       description:description,
       category:selectedCategory
     }
     fetch(
-      "https://expense-tracker-25433-default-rtdb.firebaseio.com/",
+      "https://expense-tracker-25433-default-rtdb.firebaseio.com/userExpenses.json",
       {
         method: "POST",
-        body: JSON.stringify(data),
+        body: JSON.stringify(expenseData),
         headers: {
           "Content-Type": "application/json",
         }
       }
-    )
-      .then((response) => {
-        console.log(response);
-      })
-      .catch((err) => {
-        alert(err);
-      });
-    setExpenses((prevExpenses)=>[...prevExpenses, data]);
+    ).then((response) => {
+      if (!response.ok) {
+        throw new Error('Something went wrong!');
+      }
+      return response.json();
+    })
+    .then((data) => {
+      console.log('Expense added successfully!', data);
+      setExpenses((prevExpenses)=>[...prevExpenses, expenseData]); // Optionally, you can add the expense to the context as well.
+      alert('Expense Added Successfully');
+    })
+    .catch((error) => {
+      console.error('Error adding expense:', error);
+      alert('Error adding expense');
+    });
 
     setMoneySpent('');
     setDescription('');
@@ -42,7 +49,7 @@ const Expenses = () => {
   useEffect(()=>{
     const fetchExpenses = () => {
       fetch(
-        "https://expense-tracker-25433-default-rtdb.firebaseio.com/",
+        "https://expense-tracker-25433-default-rtdb.firebaseio.com/userExpenses.json",
         {
           method: "GET",
           headers: {

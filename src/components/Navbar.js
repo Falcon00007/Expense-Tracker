@@ -1,15 +1,17 @@
-import React,{useState} from 'react';
+import React,{useState,useContext} from 'react';
 import styles from './Navbar.module.css';
 import { Link, useNavigate } from 'react-router-dom';
 import { BiMenu,BiSolidHome,BiSolidUser,BiLogIn,BiLogOut,BiNotepad } from "react-icons/bi";
+import AuthContext from '../store/auth-context';
 
 const Navbar = () => {
     const [menuActive, setMenuActive] = useState(false);
+    const authCtx= useContext(AuthContext);
+    const isLoggedIn= authCtx.isLoggedIn;
     const navigate= useNavigate();
 
     const logoutHandler=()=>{
-        localStorage.removeItem('token');
-        localStorage.removeItem('email');
+        authCtx.logout();
         navigate('/login');
     }
 
@@ -17,7 +19,6 @@ const Navbar = () => {
       setMenuActive(!menuActive);
     };
   
-    const isLoggedIn= !!localStorage.getItem('token');
   return (
     <nav className={styles.navbar}>
       <div className={styles.navbarBrand}>
