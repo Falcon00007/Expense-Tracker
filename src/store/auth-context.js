@@ -17,7 +17,6 @@ export const AuthContextProvider =(props)=>{
     
 
     const loginHandler =(token,email)=>{
-        localStorage.setItem('token', token);
         let userEmail= email.replace(/[@.]/g, "");
         setToken(token)        
         setUserMail(userEmail);

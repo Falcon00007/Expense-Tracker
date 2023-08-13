@@ -25,17 +25,40 @@
     border-radius: 3px;
     background-color: #fff;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  }
-  
+  } 
   .expenseCategory,
   .expenseDescription {
     flex: 1;
   }
-  
   .expenseAmount {
     flex: 0.3;
     text-align: right;
     font-weight: bold;
     color: #007bff;
   }
-  
+  .editBtn, .deleteBtn{
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s ease, color 0.3s ease;
+  }
+  .editBtn{
+    background-color: #3498db;
+  color: #fff;
+  margin-left: 1rem;
+  }
+  .editBtn:hover{
+    background-color: #2980b9;
+    box-shadow: 2px 3px 4px #114161;
+  }
+.deleteBtn{
+  background-color: #e74c3c;
+  color: #fff;
+  margin-left: 10px;
+}
+.deleteBtn:hover{
+  background-color: #c0392b;
+  box-shadow: 2px 3px 4px #7c1e13;
+}

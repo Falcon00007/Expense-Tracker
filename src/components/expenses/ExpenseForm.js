@@ -7,17 +7,44 @@ const Expenses = () => {
   const [moneySpent, setMoneySpent] = useState('');
   const [description, setDescription] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('');
+  const [isEdit, setEdit] = useState(false);
+  const [expenseId, setExpenseId] = useState(null);
+  const userEmail= localStorage.getItem("email");
 
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    const expenseData={
+    if (isEdit === true) {    
+      const expenseData = {
+        amount: moneySpent,
+        description: description,
+        category: selectedCategory,
+      };
+      fetch(
+        `https://expense-tracker-25433-default-rtdb.firebaseio.com/userExpenses${userEmail}/${expenseId}.json`,
+        {
+          method: "PUT",
+          body: JSON.stringify(expenseData),
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      )
+        .then((response) => {
+          console.log(response);
+          fetchExpenses();
+        })
+        .catch((err) => {
+          alert("Not able to edit successfully - " + err);
+        });
+    } else{
+       const expenseData={
       amount:moneySpent,
       description:description,
       category:selectedCategory
     }
     fetch(
-      "https://expense-tracker-25433-default-rtdb.firebaseio.com/userExpenses.json",
+      `https://expense-tracker-25433-default-rtdb.firebaseio.com/userExpenses${userEmail}.json`,
       {
         method: "POST",
         body: JSON.stringify(expenseData),
@@ -33,23 +60,24 @@ const Expenses = () => {
     })
     .then((data) => {
       console.log('Expense added successfully!', data);
-      setExpenses((prevExpenses)=>[...prevExpenses, expenseData]); // Optionally, you can add the expense to the context as well.
+      const expenseDataWithId={...expenseData, id:data.name}
+      setExpenses((prevExpenses)=>[...prevExpenses, expenseDataWithId]); // Optionally, you can add the expense to the context as well.
+     fetchExpenses();
       alert('Expense Added Successfully');
     })
     .catch((error) => {
       console.error('Error adding expense:', error);
       alert('Error adding expense');
     });
-
+  }
     setMoneySpent('');
     setDescription('');
     setSelectedCategory('');
   };
 
-  useEffect(()=>{
     const fetchExpenses = () => {
       fetch(
-        "https://expense-tracker-25433-default-rtdb.firebaseio.com/userExpenses.json",
+        `https://expense-tracker-25433-default-rtdb.firebaseio.com/userExpenses${userEmail}.json`,
         {
           method: "GET",
           headers: {
@@ -57,37 +85,65 @@ const Expenses = () => {
           },
         }
       )
-        .then((response) => {
+.then((response) => {
           if (response.ok) {
-            return response.json();
+           response.json().then((data) => {
+            console.log(data);
+            let arr = [];
+            for (let key in data) {
+              arr.push({
+                id:key,
+                description: data[key].description,
+                amount: data[key].amount,
+                category: data[key].category,
+              });
+            }
+            setExpenses(arr);
+          })
           } else {
             response.json().then((data) => {
-              let errorMessage = "Authotication Failed";
+              let errorMessage = "Add Expense Failed!!";
               if (data && data.error && data.error.message) {
                 errorMessage = data.error.message;
               }
               throw new Error(errorMessage);
             });
           }
-        })
-        .then((data) => {
-          console.log(data);
-          let arr = [];
-          for (let key in data) {
-            arr.push({
-              description: data[key].description,
-              amount: data[key].amount,
-              category: data[key].category,
-            });
-          }
-          setExpenses(arr);
-        })
-        .catch((err) => {
+        }).catch((err) => {
           console.log(err);
         });
     };
+
+    useEffect(()=>{
     fetchExpenses();
   },[])
+
+  const editHandler =(id)=>{
+    let editExpense = expenses.filter((expense) => {
+      return expense.id === id;
+    });
+    setEdit(true);
+    setExpenseId(id);
+    setMoneySpent(editExpense[0].amount);
+    setDescription(editExpense[0].description);
+    setSelectedCategory(editExpense[0].category);
+    console.log(editExpense);
+  };
+  
+
+  const deleteHandler=(id)=>{
+    fetch(`https://expense-tracker-25433-default-rtdb.firebaseio.com/userExpenses${userEmail}/${id}.json`,{
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+      }
+    }).then((response) => {
+      console.log(response);
+      setExpenses((expense)=> expense.filter((item)=>item.id!==id));
+    }).catch((err) => {
+      alert("Expense not deleted!! "+ err);
+    });
+  }
 
   return (
     <div className={styles.expenseForm}>
@@ -119,9 +175,9 @@ const Expenses = () => {
           <option value="Shopping">Shopping</option>
           <option value="Other">Other</option>
         </select>
-        <button type="submit">Add Expense</button>
+        <button  className={styles.submitBtn} type="submit">Add Expense</button>
       </form>
-      <ExpenseList expenses={expenses} />
+      <ExpenseList expenses={expenses} editHandler={editHandler} deleteHandler={deleteHandler} />
     </div>
   );
 };

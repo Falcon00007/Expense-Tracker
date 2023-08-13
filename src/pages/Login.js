@@ -36,7 +36,8 @@ function Login() {
         setLoading(false);
         const data= await res.json()
         authCtx.login(data.idToken, data.email);
-          localStorage.setItem("email",email);
+        localStorage.setItem("email", data.email.replace(/[@.]/g, ""));
+        // localStorage.setItem("email",email);
           localStorage.setItem("token", data.idToken);
           navigate('/home');
           console.log('User LoggedIn successfully');
