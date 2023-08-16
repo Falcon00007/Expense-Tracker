@@ -33,7 +33,6 @@ function Login() {
         'content-type' : 'application/json'
       }
     })
-    navigate('/expense');
      if(res.ok){
         setLoading(false);
         const data= await res.json()
@@ -41,7 +40,7 @@ function Login() {
         localStorage.setItem("email", data.email.replace(/[@.]/g, ""));
         localStorage.setItem("token", data.idToken);          
         console.log('User LoggedIn successfully');
-        
+        navigate('/expense');
         }
         else{
             setLoading(false);

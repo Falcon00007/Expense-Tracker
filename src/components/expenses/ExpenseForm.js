@@ -1,18 +1,26 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState,useCallback } from 'react';
 import styles from './ExpenseForm.module.css';
+import "./styles.css";
 import ExpenseList from './ExpenseList';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { expenseAction } from '../../store/expenseSlice'
+import { toggleDarkMode } from '../../store/themeSlice';
+import { CSVLink } from 'react-csv';
 
 const Expenses = () => {
   const [expenses, setExpenses] = useState([]);
   const [moneySpent, setMoneySpent] = useState('');
   const [description, setDescription] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('');
+  const [premium, setPremium]= useState(false);
+  const [csvData, setCsv] = useState("No Data");
   const [isEdit, setEdit] = useState(false);
   const [expenseId, setExpenseId] = useState(null);
   const userEmail= localStorage.getItem("email");
+  
   const dispatch= useDispatch();
+  const darkMode = useSelector(state => state.theme.darkMode);
+
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -85,7 +93,7 @@ const Expenses = () => {
     setSelectedCategory('');
   };
 
-    const fetchExpenses = () => {
+    const fetchExpenses = useCallback(() => {
       fetch(
         `https://expense-tracker-25433-default-rtdb.firebaseio.com/userExpenses${userEmail}.json`,
         {
@@ -108,6 +116,7 @@ const Expenses = () => {
                 category: data[key].category,
               });
             }
+            setCsv(arr);
             setExpenses(arr);
             localStorage.setItem("allExpense", JSON.stringify(arr));
             dispatch(expenseAction.addExpenses(expenses));
@@ -124,11 +133,11 @@ const Expenses = () => {
         }).catch((err) => {
           console.log(err);
         });
-    };
+    },[dispatch, userEmail, expenses]);
 
     useEffect(()=>{
     fetchExpenses();
-  },[])
+  },[fetchExpenses])
 
   const editHandler =(id)=>{
     let editExpense = expenses.filter((expense) => {
@@ -157,9 +166,41 @@ const Expenses = () => {
     });
   }
 
+  useEffect(()=>{
+   for(let i=0; i<expenses.length; i++){
+    if(expenses[i].amount > 10000){
+      setPremium(true);
+      break;
+    }else{
+      setPremium(false)
+    }
+   }
+  },[expenses])
+
+  let header = [
+    {
+      label: "Amount",
+      key: "amount",
+    },
+    {
+      label: "Description",
+      key: "description",
+    },
+    {
+      label: "Category",
+      key: "category",
+    },
+  ];
+
   return (
-    <div className={styles.expenseForm}>
-      <h2>Expense Tracker</h2>
+    <div className={styles.container}>
+    <div  className={darkMode ? `${styles.expenseForm} darkTheme` : styles.expenseForm}>
+    <div className={styles.formHeader}><h2>Expense Tracker</h2>
+   {<button className={styles.themeBtn} onClick={() => dispatch(toggleDarkMode())}>
+    Toggle Dark Mode
+  </button>}
+  </div>
+      
       <form onSubmit={handleSubmit}>
         <input
           type="number"
@@ -190,7 +231,16 @@ const Expenses = () => {
         </select>
         <button  className={styles.submitBtn} type="submit">Add Expense</button>
       </form>
-      <ExpenseList expenses={expenses} editHandler={editHandler} deleteHandler={deleteHandler}/>
+      <ExpenseList expenses={expenses} editHandler={editHandler} deleteHandler={deleteHandler} />
+      <div>
+      {premium && <button className={styles.premiumBtn}>Activate Premium</button>}
+
+      {<button className={styles.csvBtn}><CSVLink data={csvData} headers={header} filename="expenses.csv">
+           List
+         </CSVLink></button>}
+      </div>
+     
+    </div>
     </div>
   );
 };

@@ -18,7 +18,6 @@ const ExpenseList = (props) => {
         <button onClick={() => props.deleteHandler(expense.id)} className={styles.deleteBtn}>
           Delete
         </button>
-        {expense.amount>10000 && <button className={styles.premiumBtn}>Activate Premium</button>}
           </li>
         ))}
       </ul>

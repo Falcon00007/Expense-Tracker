@@ -36,7 +36,7 @@
     font-weight: bold;
     color: #007bff;
   }
-  .editBtn, .deleteBtn, .premiumBtn{
+  .editBtn, .deleteBtn{
     padding: 10px 20px;
     border: none;
     border-radius: 5px;
@@ -62,12 +62,4 @@
   background-color: #c0392b;
   box-shadow: 2px 3px 4px #7c1e13;
 }
-.premiumBtn{
-  background-color: #d8d64c;
-  color: #fff;
-  margin-left: 1rem;
-}
-.premiumBtn:hover{
-  background-color: #cac71b;
-  box-shadow: 2px 3px 4px #706f17;
-}
+  
