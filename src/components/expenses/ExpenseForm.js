@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import styles from './ExpenseForm.module.css';
 import ExpenseList from './ExpenseList';
+import { useDispatch } from 'react-redux';
+import { expenseAction } from '../../store/expenseSlice'
 
 const Expenses = () => {
   const [expenses, setExpenses] = useState([]);
@@ -10,6 +12,7 @@ const Expenses = () => {
   const [isEdit, setEdit] = useState(false);
   const [expenseId, setExpenseId] = useState(null);
   const userEmail= localStorage.getItem("email");
+  const dispatch= useDispatch();
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -20,6 +23,9 @@ const Expenses = () => {
         description: description,
         category: selectedCategory,
       };
+      dispatch(expenseAction.addAmount(moneySpent));
+      dispatch(expenseAction.addDesc(description));
+      dispatch(expenseAction.addCategory(selectedCategory));
       fetch(
         `https://expense-tracker-25433-default-rtdb.firebaseio.com/userExpenses${userEmail}/${expenseId}.json`,
         {
@@ -31,6 +37,7 @@ const Expenses = () => {
         }
       )
         .then((response) => {
+          setEdit(false);
           console.log(response);
           fetchExpenses();
         })
@@ -43,6 +50,10 @@ const Expenses = () => {
       description:description,
       category:selectedCategory
     }
+    dispatch(expenseAction.addAmount(moneySpent));
+    dispatch(expenseAction.addDesc(description));
+    dispatch(expenseAction.addCategory(selectedCategory));  
+
     fetch(
       `https://expense-tracker-25433-default-rtdb.firebaseio.com/userExpenses${userEmail}.json`,
       {
@@ -63,7 +74,6 @@ const Expenses = () => {
       const expenseDataWithId={...expenseData, id:data.name}
       setExpenses((prevExpenses)=>[...prevExpenses, expenseDataWithId]); // Optionally, you can add the expense to the context as well.
      fetchExpenses();
-      alert('Expense Added Successfully');
     })
     .catch((error) => {
       console.error('Error adding expense:', error);
@@ -99,6 +109,8 @@ const Expenses = () => {
               });
             }
             setExpenses(arr);
+            localStorage.setItem("allExpense", JSON.stringify(arr));
+            dispatch(expenseAction.addExpenses(expenses));
           })
           } else {
             response.json().then((data) => {
@@ -170,6 +182,7 @@ const Expenses = () => {
         >
           <option value="" disabled>Select Category</option>
           <option value="Food">Food</option>
+          <option value="Clothes">Clothes</option>
           <option value="Petrol">Petrol</option>
           <option value="Travel">Travel</option>
           <option value="Shopping">Shopping</option>
@@ -177,7 +190,7 @@ const Expenses = () => {
         </select>
         <button  className={styles.submitBtn} type="submit">Add Expense</button>
       </form>
-      <ExpenseList expenses={expenses} editHandler={editHandler} deleteHandler={deleteHandler} />
+      <ExpenseList expenses={expenses} editHandler={editHandler} deleteHandler={deleteHandler}/>
     </div>
   );
 };

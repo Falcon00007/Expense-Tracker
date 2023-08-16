@@ -1,17 +1,21 @@
-import React,{useState,useContext} from 'react';
+import React,{useState} from 'react';
 import styles from './Navbar.module.css';
 import { Link, useNavigate } from 'react-router-dom';
 import { BiMenu,BiSolidHome,BiSolidUser,BiLogIn,BiLogOut,BiNotepad } from "react-icons/bi";
-import AuthContext from '../store/auth-context';
+import { RiHandCoinLine } from "react-icons/ri";
+import { useSelector,useDispatch } from 'react-redux';
+import {authAction} from "../store/authSlice"
 
 const Navbar = () => {
     const [menuActive, setMenuActive] = useState(false);
-    const authCtx= useContext(AuthContext);
-    const isLoggedIn= authCtx.isLoggedIn;
+    const dispatch = useDispatch();
+  const isLoggedIn = useSelector((state) => state.authReducer.isLoggedin);
     const navigate= useNavigate();
 
     const logoutHandler=()=>{
-        authCtx.logout();
+      dispatch(authAction.logout());
+      localStorage.removeItem("email");
+      localStorage.removeItem("token");
         navigate('/login');
     }
 
@@ -22,7 +26,7 @@ const Navbar = () => {
   return (
     <nav className={styles.navbar}>
       <div className={styles.navbarBrand}>
-        <div className={styles.navbarTitle}>Expense Tracker</div>
+        <div className={styles.navbarTitle}><span className={styles.expenseSign}><RiHandCoinLine/></span>  Expense Tracker </div>
       </div>
       <button className={styles.hamburgerButton} onClick={toggleMenu}>
       <span className={styles.hamburgerIcon}><BiMenu/></span>

@@ -1,4 +1,4 @@
-import React,{useContext} from 'react'
+import React from 'react'
 import Navbar from "./components/Navbar";
 import Expense from "./components/expenses/Expense";
 import ForgetPassword from "./pages/ForgetPassword";
@@ -7,9 +7,10 @@ import Login from "./pages/Login";
 import Profile from "./pages/Profile";
 import Signup from "./pages/Signup";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
-import AuthContext from './store/auth-context';
+import { useSelector } from 'react-redux';
+
 function App() {
-  const isLoggedIn= useContext(AuthContext).isLoggedIn;
+  const isLoggedIn= useSelector((state) => state.authReducer.isLoggedin);
 
   return (
     <BrowserRouter>

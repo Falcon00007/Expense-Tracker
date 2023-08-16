@@ -1,7 +1,8 @@
-import React, { useState, useContext } from 'react';
+import React, { useState } from 'react';
 import classes from './Login.module.css';
-import { Link,useNavigate } from 'react-router-dom';
-import AuthContext from '../store/auth-context';
+import { Link, useNavigate } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { authAction } from "../store/authSlice" 
 
 function Login() {
   const [email, setEmail] = useState('');
@@ -9,7 +10,7 @@ function Login() {
   const [loading, setLoading] = useState(false);
   const [error, setError]= useState("");
   const navigate= useNavigate();
-  const authCtx= useContext(AuthContext);
+  const dispatch = useDispatch();
 
   const handleLogin = async(e) => {
     e.preventDefault();
@@ -32,21 +33,21 @@ function Login() {
         'content-type' : 'application/json'
       }
     })
+    navigate('/expense');
      if(res.ok){
         setLoading(false);
         const data= await res.json()
-        authCtx.login(data.idToken, data.email);
+        dispatch(authAction.login(data.idToken));
         localStorage.setItem("email", data.email.replace(/[@.]/g, ""));
-        // localStorage.setItem("email",email);
-          localStorage.setItem("token", data.idToken);
-          navigate('/home');
-          console.log('User LoggedIn successfully');
+        localStorage.setItem("token", data.idToken);          
+        console.log('User LoggedIn successfully');
+        
         }
         else{
             setLoading(false);
           const data= await res.json();
             if(data && data.error.message){
-              setError("LogIn not successful- " + data.error.message)
+              setError("Login not successful- " + data.error.message)
             } else{
               setError("Some error occured!! Please try again..")
             }

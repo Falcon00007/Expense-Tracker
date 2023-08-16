@@ -1,5 +1,6 @@
 
 .navbar {
+  position: sticky;
     background-color: #333;
     color: #fff;
     display: flex;
@@ -9,12 +10,16 @@
   }
   
   .navbarTitle {
+    display: flex;
     font-size: 24px;
     font-weight: bold;
     text-decoration: none;
     color: #fff;
   }
-  
+  .expenseSign{
+    font-size: 2rem;
+    margin-right: 1rem;
+  }
   .navbarNav {
     list-style: none;
     display: flex;

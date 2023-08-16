@@ -3,7 +3,7 @@
     justify-content: center;
     align-items: center;
     height: 100vh;
-    background: linear-gradient(to bottom right, #74ebd5, #ACB6E5);
+    background: linear-gradient(to bottom right, #4539eb,#74ebd5);
   }
   
   .loginForm {
