@@ -61,7 +61,7 @@ const Profile = () => {
             body: JSON.stringify({
               idToken: token
             }),
-            headers: {
+            headers: { 
               'content-type' : 'application/json'
             }
           })
@@ -92,7 +92,7 @@ const Profile = () => {
   return (
     <>
     <div className={classes.topText}>
-        <div>Winners never quit, quitters never win</div>
+        <div className={classes.quote}>Winners never quit, quitters never win</div>
         <div className={classes.profileInfo}>Your profile is 60% complete. AComplete Profile has a higher chance of landing a job. <Link to="">Complete Now</Link></div>
         </div>
         <hr />
@@ -115,7 +115,7 @@ const Profile = () => {
         </div>
         <div className={classes['input-container']}>
           <label htmlFor="photoUrl" className={classes.label}>
-           <BsGlobe/> Profile Photo URL
+           <BsGlobe/> Profile Photo URL:
           </label>
           <input
             type="text"

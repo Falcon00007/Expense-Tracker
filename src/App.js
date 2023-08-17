@@ -17,7 +17,7 @@ function App() {
     <Navbar/>
     <Routes>
    {!isLoggedIn && <Route path="/" exact element={ <Signup/>}/>}
-   {!isLoggedIn && <Route path="/login" element={<Login/>}/>}
+   {<Route path="/login" element={<Login/>}/>}
     <Route path="/home" element={<Home/>}/>
    {isLoggedIn && <Route path="/profile" element={<Profile/>}/>}
    {isLoggedIn && <Route path="/expense" element={<Expense/>}/>}

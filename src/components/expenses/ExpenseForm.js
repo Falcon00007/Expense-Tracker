@@ -1,6 +1,6 @@
 import React, { useEffect, useState,useCallback } from 'react';
 import styles from './ExpenseForm.module.css';
-import "./styles.css";
+import classes from "./styles.module.css";
 import ExpenseList from './ExpenseList';
 import { useDispatch, useSelector } from 'react-redux';
 import { expenseAction } from '../../store/expenseSlice'
@@ -13,6 +13,7 @@ const Expenses = () => {
   const [description, setDescription] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('');
   const [premium, setPremium]= useState(false);
+  const [premiumActive, setPremiumActive]= useState(false);
   const [csvData, setCsv] = useState("No Data");
   const [isEdit, setEdit] = useState(false);
   const [expenseId, setExpenseId] = useState(null);
@@ -137,7 +138,7 @@ const Expenses = () => {
 
     useEffect(()=>{
     fetchExpenses();
-  },[fetchExpenses])
+  },[])
 
   const editHandler =(id)=>{
     let editExpense = expenses.filter((expense) => {
@@ -168,14 +169,23 @@ const Expenses = () => {
 
   useEffect(()=>{
    for(let i=0; i<expenses.length; i++){
-    if(expenses[i].amount > 10000){
+    if(expenses[i].amount > 10000 && premiumActive===false){
       setPremium(true);
       break;
     }else{
       setPremium(false)
     }
    }
-  },[expenses])
+  },[expenses,premiumActive])
+
+  const activatePremiumHandler=()=>{
+    if(premium===true){
+      setPremiumActive(true);
+    setPremium(false);
+    }else{
+      setPremiumActive(false);
+    }
+  }
 
   let header = [
     {
@@ -194,9 +204,9 @@ const Expenses = () => {
 
   return (
     <div className={styles.container}>
-    <div  className={darkMode ? `${styles.expenseForm} darkTheme` : styles.expenseForm}>
+    <div  className={darkMode ? `${styles.expenseForm} ${classes.darkTheme}` : styles.expenseForm}>
     <div className={styles.formHeader}><h2>Expense Tracker</h2>
-   {<button className={styles.themeBtn} onClick={() => dispatch(toggleDarkMode())}>
+   {premiumActive && <button className={styles.themeBtn} onClick={() => dispatch(toggleDarkMode())}>
     Toggle Dark Mode
   </button>}
   </div>
@@ -233,10 +243,10 @@ const Expenses = () => {
       </form>
       <ExpenseList expenses={expenses} editHandler={editHandler} deleteHandler={deleteHandler} />
       <div>
-      {premium && <button className={styles.premiumBtn}>Activate Premium</button>}
+      {premium && <button className={styles.premiumBtn} onClick={activatePremiumHandler}>Activate Premium</button>}
 
-      {<button className={styles.csvBtn}><CSVLink data={csvData} headers={header} filename="expenses.csv">
-           List
+      {premiumActive && <button className={styles.csvBtn}><CSVLink data={csvData} headers={header} filename="expenses.csv">
+           Download Expense File
          </CSVLink></button>}
       </div>
      

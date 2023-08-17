@@ -40,7 +40,7 @@ function Login() {
         localStorage.setItem("email", data.email.replace(/[@.]/g, ""));
         localStorage.setItem("token", data.idToken);          
         console.log('User LoggedIn successfully');
-        navigate('/expense');
+        navigate('/home');
         }
         else{
             setLoading(false);

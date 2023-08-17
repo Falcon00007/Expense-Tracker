@@ -7,7 +7,7 @@
     background-color: #f5f5f5;
   }
   .expenseList p{
-    display: inline-block;
+    display: inline-block; 
     position: relative;
     top: 4px;
   }
@@ -24,7 +24,7 @@
     border: 1px solid #ccc;
     border-radius: 3px;
     background-color: #fff;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
   } 
   .expenseCategory,
   .expenseDescription {
@@ -62,4 +62,31 @@
   background-color: #c0392b;
   box-shadow: 2px 3px 4px #7c1e13;
 }
+
+@media (max-width: 600px) {
+  .expenseList {
+    width: 90%;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .expenseItem {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 10px;
+  }
+
+  .expenseAmount {
+    text-align: left;
+    margin-top: 5px;
+  }
+
+  .editBtn,
+  .deleteBtn {
+    margin-top: 10px;
+    margin-left: 0; 
+    width: 100%;
+  }
+}
+
   
