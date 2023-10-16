@@ -1,62 +1,63 @@
-import React, { useState } from 'react';
-import classes from './Login.module.css';
-import { Link, useNavigate } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
-import { authAction } from "../store/authSlice" 
+import React, { useState } from "react";
+import classes from "./Login.module.css";
+import { Link, useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { authAction } from "../store/authSlice";
 
 function Login() {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
-  const [error, setError]= useState("");
-  const navigate= useNavigate();
+  const [error, setError] = useState("");
+  const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  const handleLogin = async(e) => {
+  const handleLogin = async (e) => {
     e.preventDefault();
-    setLoading(true)
-    
-    if(!email || !password ){
-      setError("All fields are mandatory!!");
-      return
+
+    if (!email || !password) {
+      setError("⚠️All fields are mandatory!!⚠️");
+      return;
     }
+    setLoading(true);
 
     try {
-    const res= await fetch('https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyAa6b1vvHl497ZXR8GOXQbTNEkyd0l5db4', {
-      method:'POST',
-      body: JSON.stringify({
-        email:email,
-        password:password,
-        returnSecureToken: true
-      }),
-      headers: {
-        'content-type' : 'application/json'
-      }
-    })
-     if(res.ok){
+      const res = await fetch(
+        "https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyBHW0kBQZMIDR2715ngfBopkWLxHe5ff0A",
+        {
+          method: "POST",
+          body: JSON.stringify({
+            email: email,
+            password: password,
+            returnSecureToken: true,
+          }),
+          headers: {
+            "content-type": "application/json",
+          },
+        }
+      );
+      if (res.ok) {
         setLoading(false);
-        const data= await res.json()
+        const data = await res.json();
         dispatch(authAction.login(data.idToken));
         localStorage.setItem("email", data.email.replace(/[@.]/g, ""));
-        localStorage.setItem("token", data.idToken);          
-        console.log('User LoggedIn successfully');
-        navigate('/home');
+        localStorage.setItem("token", data.idToken);
+        console.log("User LoggedIn successfully");
+        navigate("/home");
+      } else {
+        setLoading(false);
+        const data = await res.json();
+        if (data && data.error.message) {
+          setError("❌Login not successful- " + data.error.message + "❌");
+        } else {
+          setError("⚠️Some error occured!! Please try again..");
         }
-        else{
-            setLoading(false);
-          const data= await res.json();
-            if(data && data.error.message){
-              setError("Login not successful- " + data.error.message)
-            } else{
-              setError("Some error occured!! Please try again..")
-            }
-          }
+      }
     } catch (error) {
-      console.error('Error logging in :', error);
+      console.error("❌Error logging in :", error, "❌");
     }
-    setEmail('');
+    setEmail("");
     setPassword("");
-    
   };
 
   return (
@@ -82,7 +83,9 @@ function Login() {
           <Link to="/forgetpassword">Forgot Password?</Link>
         </div>
         <div className={classes.signupLink}>
-          <Link to="/"><p>Don't have an account? Sign Up.</p></Link>
+          <Link to="/">
+            <p>Don't have an account? Sign Up.</p>
+          </Link>
         </div>
       </form>
     </div>

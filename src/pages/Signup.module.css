@@ -4,7 +4,7 @@
   justify-content: center;
   align-items: center;
   height: 100vh;
-  background: linear-gradient(to bottom right, #FF6B6B, #FFC3A0);
+  background: linear-gradient(to bottom right, #ff6b6b, #ffc3a0);
 }
 
 .signupForm {
@@ -32,7 +32,7 @@
 }
 
 .signupForm button {
-  background-color: #FF6B6B;
+  background-color: #ff6b6b;
   color: white;
   padding: 12px 20px;
   border: none;
@@ -43,21 +43,11 @@
 }
 
 .signupForm button:hover {
-  background-color: #FF8E8E;
+  background-color: #ff8e8e;
 }
 
-.loginLink {
-  margin-top: 1.4rem;
-  color: black;
-  text-align: center;
-  background-color: lightblue;
-  height: 2.5rem;
-  width: 25%;
-  padding-bottom: 1rem;
-}
-
-.loginLink a{
-  color: #FF6B6B;
+.loginLink a {
+  color: #ff6b6b;
   text-decoration: none;
   font-weight: 500;
   font-size: 1.1rem;
@@ -65,9 +55,9 @@
 }
 
 .signupForm .loginLink a:hover {
-  color: #FF8E8E;
+  color: #ff8e8e;
 }
-.errorMessage{
+.errorMessage {
   text-align: center;
   color: red;
   font-size: 1.2rem;
