@@ -109,7 +109,6 @@ const Expenses = () => {
       .then((response) => {
         if (response.ok) {
           response.json().then((data) => {
-            console.log(data);
             let arr = [];
             for (let key in data) {
               arr.push({
@@ -175,13 +174,14 @@ const Expenses = () => {
   };
 
   useEffect(() => {
+    let total = 0;
     for (let i = 0; i < expenses.length; i++) {
-      if (expenses[i].amount > 10000 && premiumActive === null) {
-        setPremium(true);
-        break;
-      } else {
-        setPremium(false);
-      }
+      total += +expenses[i].amount;
+    }
+    if (total >= 10000 && premiumActive === null) {
+      setPremium(true);
+    } else {
+      setPremium(false);
     }
   }, [expenses, premiumActive]);
 
