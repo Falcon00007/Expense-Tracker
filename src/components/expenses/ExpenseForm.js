@@ -13,7 +13,9 @@ const Expenses = () => {
   const [description, setDescription] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("");
   const [premium, setPremium] = useState(false);
-  const [premiumActive, setPremiumActive] = useState(false);
+  const [premiumActive, setPremiumActive] = useState(
+    localStorage.getItem("premiumActivated")
+  );
   const [csvData, setCsv] = useState("No Data");
   const [isEdit, setEdit] = useState(false);
   const [expenseId, setExpenseId] = useState(null);
@@ -174,7 +176,7 @@ const Expenses = () => {
 
   useEffect(() => {
     for (let i = 0; i < expenses.length; i++) {
-      if (expenses[i].amount > 10000 && premiumActive === false) {
+      if (expenses[i].amount > 10000 && premiumActive === null) {
         setPremium(true);
         break;
       } else {
@@ -186,9 +188,11 @@ const Expenses = () => {
   const activatePremiumHandler = () => {
     if (premium === true) {
       setPremiumActive(true);
+      localStorage.setItem("premiumActivated", true);
       setPremium(false);
     } else {
       setPremiumActive(false);
+      localStorage.removeItem("premiumActivated");
     }
   };
 
